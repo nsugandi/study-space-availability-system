@@ -1,4 +1,4 @@
-import tk
+import tkinter as tk
 
 # Function to change the label text
 def change_label_text():

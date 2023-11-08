@@ -1,4 +1,4 @@
-import tk
+import tkinter as tk
 import paho.mqtt.client as mqtt
 
 # MQTT Config
