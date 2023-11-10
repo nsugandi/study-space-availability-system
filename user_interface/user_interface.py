@@ -2,8 +2,8 @@ import tkinter as tk
 import paho.mqtt.client as mqtt
 
 # MQTT Config
-mqtt_broker = "your_mqtt_broker_address"
-mqtt_topic = "your_topic_to_subscribe"
+mqtt_broker = "192.168.0.161"
+mqtt_topic = "seat_1"
 
 # MQTT Callbacks
 def on_connect(client, userdata, flags, rc):
