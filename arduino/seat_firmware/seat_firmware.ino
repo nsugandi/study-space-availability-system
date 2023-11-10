@@ -2,16 +2,16 @@
 #include <PubSubClient.h>
 #include <stdio.h>
 
-const char* ssid = "TP-Link_FA42";
-const char* password = "TeamNowAdmitted";
-const char* mqtt_server = "192.168.0.100";
+const char* ssid = "TP-Link_99C4";
+const char* password = "85320062";
+const char* mqtt_server = "192.168.0.161";
 const char* mqtt_topic = "seat_1";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
 void setup() {
-  Serial.begin(115200);
+  // Serial.begin(115200);
   
   // Setup pin modes
   pinMode(2, OUTPUT); // Built-in LED
@@ -39,8 +39,8 @@ void loop() {
   client.loop();
 
   // Publish data
-  int currentState = digitalRead(34);
-  Serial.println(currentState);
+  int currentState = (digitalRead(34) + 1) % 2; // multiply by -1 to flip ones and zeros
+  // Serial.println(currentState);
   String payload = String(currentState);
   client.publish(mqtt_topic, payload.c_str());
   delay(1000);
