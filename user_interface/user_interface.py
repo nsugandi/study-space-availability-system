@@ -19,7 +19,7 @@ def on_message(client, userdata, message):
 
 # Update color of box
 def update_color():
-    color = "red" if message_data.get() == "0" else "green"
+    color = "green" if message_data.get() == "0" else "red"
     message_label.configure(bg=color)
 
 # Create MQTT Client
