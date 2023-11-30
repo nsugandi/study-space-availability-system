@@ -40,7 +40,7 @@ def set_color():
             try: 
                 seat_vacancy[i] = int(seat_vacancy[i])
             except(ValueError):
-                seat_vacancy[i] = 2
+                seat_vacancy[i] = 2 
 
     for i, seat in enumerate(seats):
         canvas.itemconfig(seat, fill=colors[seat_vacancy[i]])
@@ -57,19 +57,37 @@ def display_error():
     app.after(1, display_error)
 
 
-# Function to switch to the second page
-def show_availability_page():
+# Function to switch to the room 1 page
+def show_availability1_page():
     info_label.pack_forget()
     canvas.pack()
     set_color()
     error.pack()
     display_error()
-    change_page_button.config(text="Return to Home Page", command=show_info_page)
+    #change_page_button.pack_forget()
+    room_1_button.config(text="Return to Home Page", command=show_info_page)
+    room_2_button.pack_forget()
+
+# Function to switch to the room 2 page
+def show_availability2_page():
+    info_label.pack_forget()
+    canvas.pack()
+    set_color()
+    error.pack()
+    display_error()
+    #change_page_button.pack_forget()
+    room_1_button.pack_forget()
+    room_2_button.config(text="Return to Home Page", command=show_info_page)
+
 
 # Function to switch to the first page
 def show_info_page():
     canvas.pack_forget()
-    change_page_button.config(text="Check Study Room Availability", command=show_availability_page)
+    room_1_button.pack()
+    room_2_button.pack()
+    #change_page_button.config(text="Check Study Room Availability", command=show_availability_page)
+    room_1_button.config(text="See Room 1", command=show_availability1_page)
+    room_2_button.config(text="See Room 2", command=show_availability2_page)
     info_label.pack()
 
 def check_error():
@@ -80,7 +98,7 @@ def check_error():
 # Initialize the main window
 app = tk.Tk()
 app.title("Study Room Availability")
-app.geometry("400x400")
+app.geometry("600x300")
 
 # Create a canvas to draw the squares
 canvas = tk.Canvas(app, width=num_seats*100, height=300)
@@ -104,15 +122,25 @@ for i in range(num_seats):
 set_color()
 
 # Create a button to change pages
-change_page_button = tk.Button(app, text="Switch to Study Room Availability", command=show_availability_page)
-change_page_button.pack()
+# change_page_button = tk.Button(app, text="Switch to Study Room Availability", command=show_availability_page)
+# change_page_button.pack() 
+
+#Create a button to go to Room 1
+room_1_button = tk.Button(app, text="See Room 1", command=show_availability1_page)
+room_1_button.place(x=250,y=50)
+room_1_button.pack()
+
+#Create a button to go to Room 2
+room_2_button = tk.Button(app, text="See Room 2", command=show_availability2_page)
+room_2_button.place(x=250,y=100)
+room_2_button.pack()
 
 # Error Message
 error = tk.Label(app, text="", font=("Helvetica", 24), fg="yellow")
 error.pack()
 
 # Information Page
-info_label = tk.Label(app, text="Hi! Welcome to the UW Study Room Availability Portal.", font=("Helvetica", 12), fg="blue")
+info_label = tk.Label(app, text="Hi! Welcome to the UW Study Room Availability Portal.", font=("Helvetica", 24), fg="black")
 info_label.pack()
 
 # Initially, show the Information Page
