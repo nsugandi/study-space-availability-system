@@ -32,7 +32,7 @@ mqtt_client.connect(mqtt_broker, 1883, 60)
 
 # Tkinter App
 app = tk.Tk()
-app.title("MQTT Data Display")
+app.title("Study Room Availability")
 
 # Display Colored Box
 message_label = tk.Label(app, text="", font=("Arial", 14), width=10, height=5)
