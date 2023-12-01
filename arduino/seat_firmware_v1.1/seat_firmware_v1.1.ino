@@ -4,8 +4,8 @@
 
 const char* ssid = "TP-Link_99C4";
 const char* password = "85320062";
-const char* mqtt_server = "192.168.0.161";
-const char* mqtt_topic = "seat_1";
+const char* mqtt_server = "192.168.0.209";
+const char* mqtt_topic = "room_1/seat_2";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -14,7 +14,7 @@ void setup() {
   // Serial.begin(115200);
   
   // Setup pin modes
-  pinMode(2, OUTPUT); // Built-in LED
+  pinMode(5, OUTPUT); // Built-in LED
   pinMode(34, INPUT); // Button
   
   WiFi.begin(ssid, password);
@@ -29,7 +29,7 @@ void setup() {
 
 void loop() {
   if (!client.connected()) {
-    if (client.connect("ESP32Client")) {
+    if (client.connect("Room_1_Seat_2")) {
       // Serial.println("Connected to MQTT broker");
     }
   }
