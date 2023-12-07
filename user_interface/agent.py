@@ -1,9 +1,10 @@
 import tkinter as tk
 import paho.mqtt.client as mqtt
+import csv
 
 # MQTT Config
-mqtt_broker = "192.168.0.161"
-mqtt_topic = "seat_1"
+mqtt_broker = "192.168.0.209"
+mqtt_topic = "room_1/seat_1"
 
 Seats = {}
 
@@ -21,7 +22,15 @@ def on_message(client, userdata, message):
     status = curr_message[0]
     ip_address = curr_message[1]
     Seats.update({ip_address: status})
+    print(Seats)
+    update_csv()
 
+def update_csv():
+    with open('availability.csv', 'w') as f:
+    # Write all the dictionary keys in a file with commas separated.
+        for key in Seats.keys():
+            string = key + "," + Seats.get(key) + "\n"
+            f.write(string)
 
 # Create MQTT Client
 mqtt_client = mqtt.Client()
@@ -32,4 +41,4 @@ mqtt_client.on_message = on_message
 mqtt_client.connect(mqtt_broker, 1883, 60)
 
 # Start MQTT Client
-mqtt_client.loop_start()
+mqtt_client.loop_forever()

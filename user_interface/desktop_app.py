@@ -20,80 +20,56 @@ By: Whitney Waldinger
 
 import tkinter as tk
 import ast
+import csv
 
 # Define your color array with four colors
 colors = ["green", "red","yellow"]
 
-seat_vacancy = []
+seat_vacancy = {}
 
-num_seats = 6
+rooms = {'192.168.0.246': [1,1],
+         'IP_ESP2': [1,2],
+         'IP_ESP3': [1,3]}
+
+num_seats =1
+
+def import_data():
+    global seat_vacancy
+    global rooms
+    data_dict = {}
+    with open('availability.csv', 'r') as csvfile:
+        for row in csvfile:
+
+            arr = row.strip().split(",")
+            data_dict.update({rooms.get(arr[0])[1]: int(arr[1])})
+    seat_vacancy = data_dict
 
 # Function to change the color of the squares based on an index
 def set_color():
     global seat_vacancy
-
-    with open("data.txt", "r") as file:
-        data = file.read()
-        seat_vacancy = data.split()
-
-        for i in range(num_seats):
-            try: 
-                seat_vacancy[i] = int(seat_vacancy[i])
-            except(ValueError):
-                seat_vacancy[i] = 2 
-
-    for i, seat in enumerate(seats):
-        canvas.itemconfig(seat, fill=colors[seat_vacancy[i]])
-
-        
+    import_data()
+    for key in seat_vacancy.keys():
+       canvas.itemconfig(seats[key - 1], fill=colors[seat_vacancy.get(key)])
+     
     app.after(1, set_color)
-
-def display_error():
-    if check_error():
-        error.config(text="Error!!")
-    else:
-        error.config(text="")
-
-    app.after(1, display_error)
 
 
 # Function to switch to the room 1 page
-def show_availability1_page():
+def show_availability_page():
     info_label.pack_forget()
     canvas.pack()
     set_color()
-    error.pack()
-    display_error()
+
     #change_page_button.pack_forget()
     room_1_button.config(text="Return to Home Page", command=show_info_page)
-    room_2_button.pack_forget()
-
-# Function to switch to the room 2 page
-def show_availability2_page():
-    info_label.pack_forget()
-    canvas.pack()
-    set_color()
-    error.pack()
-    display_error()
-    #change_page_button.pack_forget()
-    room_1_button.pack_forget()
-    room_2_button.config(text="Return to Home Page", command=show_info_page)
-
 
 # Function to switch to the first page
 def show_info_page():
     canvas.pack_forget()
     room_1_button.pack()
-    room_2_button.pack()
     #change_page_button.config(text="Check Study Room Availability", command=show_availability_page)
-    room_1_button.config(text="See Room 1", command=show_availability1_page)
-    room_2_button.config(text="See Room 2", command=show_availability2_page)
+    room_1_button.config(text="See Room 1", command=show_availability_page)
     info_label.pack()
-
-def check_error():
-    for seat in seat_vacancy:
-        if seat == 2:
-            return True
 
 # Initialize the main window
 app = tk.Tk()
@@ -104,7 +80,7 @@ app.geometry("600x300")
 canvas = tk.Canvas(app, width=num_seats*100, height=300)
 canvas.pack()
 
-# Draw four squares with initial colors
+# Draw squares with initial colors
 seats = []
 for i in range(num_seats):
     x1 = 10 + i * 75
@@ -121,23 +97,11 @@ for i in range(num_seats):
 
 set_color()
 
-# Create a button to change pages
-# change_page_button = tk.Button(app, text="Switch to Study Room Availability", command=show_availability_page)
-# change_page_button.pack() 
-
 #Create a button to go to Room 1
-room_1_button = tk.Button(app, text="See Room 1", command=show_availability1_page)
+room_1_button = tk.Button(app, text="See Room 1", command=show_availability_page)
 room_1_button.place(x=250,y=50)
 room_1_button.pack()
 
-#Create a button to go to Room 2
-room_2_button = tk.Button(app, text="See Room 2", command=show_availability2_page)
-room_2_button.place(x=250,y=100)
-room_2_button.pack()
-
-# Error Message
-error = tk.Label(app, text="", font=("Helvetica", 24), fg="yellow")
-error.pack()
 
 # Information Page
 info_label = tk.Label(app, text="Hi! Welcome to the UW Study Room Availability Portal.", font=("Helvetica", 24), fg="black")
