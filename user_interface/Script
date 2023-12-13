@@ -1,0 +1,7 @@
+# stop and then restart MQTT server
+sudo systemctl stop mosquitto
+mosquitto -c /etc/mosquitto/mosquitto.conf
+source venv/bin/activate
+cd user_interface
+python3 agent.py &
+python3 desktop_app.py
