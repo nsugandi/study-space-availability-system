@@ -2,18 +2,22 @@ import tkinter as tk
 import paho.mqtt.client as mqtt
 
 # MQTT Config
-mqtt_broker = "192.168.0.161"
-mqtt_topic = "seat_1"
+mqtt_broker = "192.168.0.209"
+mqtt_topic = "room_1/seat_1"
+mqtt_topic_2 = "room_1/seat_2"
 
 # MQTT Callbacks
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connected to MQTT Broker")
         client.subscribe(mqtt_topic)
+
     else:
         print(f"Failed to connect to MQTT Broker with code {rc}")
 
 def on_message(client, userdata, message):
+    #print("Client: ", mqtt_client._client_id)
+    #print("Userdata: ", userdata)
     message_data.set(message.payload.decode("utf-8"))
     update_color()
 
@@ -27,12 +31,13 @@ mqtt_client = mqtt.Client()
 mqtt_client.on_connect = on_connect
 mqtt_client.on_message = on_message
 
+
 # Connect to the MQTT Broker
 mqtt_client.connect(mqtt_broker, 1883, 60)
 
 # Tkinter App
 app = tk.Tk()
-app.title("Study Room Availability")
+app.title("MQTT Data Display")
 
 # Display Colored Box
 message_label = tk.Label(app, text="", font=("Arial", 14), width=10, height=5)

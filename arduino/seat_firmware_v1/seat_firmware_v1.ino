@@ -29,7 +29,7 @@ void setup() {
 
 void loop() {
   if (!client.connected()) {
-    if (client.connect("Room_1_Seat_1")) {
+    if (client.connect("Seat")) {
       // Serial.println("Connected to MQTT broker");
     }
   }
@@ -40,8 +40,7 @@ void loop() {
 
   // Publish data
   int currentState = (digitalRead(34) + 1) % 2; // multiply by -1 to flip ones and zeros
-  // Serial.println(currentState);
-  String payload = String(currentState);
+  String payload = String(currentState) + " " + WiFi.localIP().toString();
   client.publish(mqtt_topic, payload.c_str());
   delay(1000);
 }
